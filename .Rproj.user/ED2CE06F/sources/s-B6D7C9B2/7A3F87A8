@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1556600567246.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1330473159",
+    "id" : "7A3F87A8",
+    "lastKnownWriteTime" : 1554836227,
+    "last_content_update" : 1554836227,
+    "path" : "C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Climate/2.1-Climate.Rmd",
+    "project_path" : null,
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

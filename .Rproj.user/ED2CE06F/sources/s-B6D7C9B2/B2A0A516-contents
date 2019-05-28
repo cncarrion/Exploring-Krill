@@ -1,0 +1,142 @@
+---
+title: "Introduction Module (2)"
+author: "Data Science for the Environment"
+date: 2019-04-04
+output: html_document
+---
+
+```{r include = F}
+# This code block sets up the r session when the page is rendered to html
+# include = FALSE means that it will not be included in the html document
+
+# Write every code block to the html document 
+knitr::opts_chunk$set(echo = TRUE)
+
+# Write the results of every code block to the html document 
+knitr::opts_chunk$set(eval = TRUE)
+
+# A function that allows writing r inline verbatim
+rinline <- function(code) {
+  sprintf('``` `r %s` ```', code)
+}
+```
+
+### Before class
+
+Read
+
+* R4DS-27.1: [Introduction](http://r4ds.had.co.nz/r-markdown.html#introduction-18)
+* R4DS-27.2: [R Markdown](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics)
+* R4DS-27.4: [Code chunks](http://r4ds.had.co.nz/r-markdown.html#code-chunks)
+* [R Markdown Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+* [R Markdown Reference Guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+Watch
+
+* DataCamp: [Chapter 1: Authoring RMarkdown Reports](https://www.datacamp.com/courses/reporting-with-r-markdown)
+
+### Structure of a R Markdown (Rmd) document
+
+R markdown files have three main pieces:
+
+1. A header that tells the program how to read the document.
+1. Text with markdown-style formatting.
+1. Code chunks that conduct the analysis.
+
+> **Practice**
+> 
+> Find each of these three pieces in this example lesson document.
+
+#### Markdown-style text
+
+Markdown is a basic and readable way to format text that is used by many web platforms because it enables to easily make web-based content without writing html. Most importantly--it is a way to encode formatting directly into the text, which can then be interpretted into multiple different document formats. Markdown keeps documents text-based so that files are readable by both humans and machines.
+
+Here's [a quick lesson](https://guides.github.com/features/mastering-markdown/) on markdown from GitHub.
+
+> **Practice**
+>
+> Look at this .Rmd file and find examples of the following formatting:
+>
+> + a header (what controls the size of the header?)
+> + bold text and italic text
+> + a list
+> + a numbered list
+> + text that links to a webpage
+> + text formatted as code that is not evaluated (verbatim code)
+
+R markdown also allows you to type latex-style mathematical formulas using `$ $` for inline text and `$$  $$` for for equations centered on their own lines. For example: `$$ E(X) = \sum_{i=1}^N x_i \times p(x_i)$$` would display as: $$ E(X) = \sum_{i=1}^N x_i \times p(x_i)$$
+
+#### Code chunks
+
+Code chunks perform the analysis. Code chunks begin with ` ```{} ` and end with ` ``` `. Any text inside the `{}` at the beginning of the chunk tells R how to evaluate and display the results of the code. Since we will be using R to evaluate our code, all of our code chunks will begin with: 
+` ```{r} `. You can name code chunks (to keep track of parts of an analysis) by typing a word after the `r`: ` ```{r chunk-name}`. Any text that you place between the beginning and ending tags of a code chunk will be treated as plain R code. Code chunks are evaluated sequentially, so any objects that you create in a chunk will be available to the chunks that follow it.
+
+You can also evaluate R code within a paragraph of text (e.g. inline code). For example, suppose you know that you weigh 142 lbs, but want to report it in kg. If you had done the calculation in a code chunk:
+
+```{r}
+my_lbs <- 142
+my_kg <- my_lbs * 0.45359237
+```
+You could write: I weigh `r rinline("my_kg")` kg. Which would display: I weigh `r my_kg` kg. Or, for better formatting: I weigh `r rinline("round(my_kg, 1)")` kg. (Displays: I weigh `r round(my_kg, 1)` kg.) If you hadn't done the calculation in a code chunk you can also do calculation in the line: I weigh `r rinline("round(142*0.453, 1)")` kg.
+
+### Conducting analyses in Rmd
+
+You can treat R markdown files (almost) just like a regular R script. Any text that you highlight or line that you place your cursor on can be run by pressing Ctr+Enter or Cmd+Enter. You can also run an entire code chunk by pressing the green arrow that appears to the right of it.
+
+If you click the 'Run' button at the top of the document you can choose to run all code chunks in the document (or just those above or below your cursor).
+
+> **Practice**
+>
+> Run a line of code in the example lesson Rmd file. What happens in the Console window? What happens in the Environment window?
+>
+> Now try running a line of text from this document. What happens?
+>
+> What happens when you use the 'Run' button to run all code chunks in the document? 
+
+
+### Rendering Rmd to html
+
+When you are finished with an analysis (or even if you are only part-way through) you can convert your Rmd file to another file format to generate a report. This process is called *rendering* and we will be rendering all of our Rmd files to html so that they can display as webpages on our course website. For your project, you may want to render your analysis to a slide show (beamer) or pdf or word document.
+
+Documents written in R markdown are rendered to other document formats by the `rmarkdown` package that comes automatically installed with RStudio. The rmarkdown package renders documents using two steps: First, it excutes all of the code using functions from the `knitr` package. Then, it converts the output of the code and any markdown-formatted text to a new document format using functions in the `pandoc` package. Note that any output that you generate in the code chunks (e.g. plots, exported data) will be saved relative to the working directory, unless you specify otherwise in a code chunk option.
+
+To render an Rmd document in Rstudio, click the 'Knit' button at the top of the window displaying the document. If everything goes right a new window should pop up showing the new file that was generated (or prompt you to open the file in a browser window). The file will be saved in the directory where the Rmd file is located.
+
+> **Practice**
+> 
+> 1. Render the example lesson Rmd file to an html file in RStudio by clicking the Knit button.
+> 2. Use your file browser to locate the html file that was generated. Open it with your browser--what do you see?
+> 3. Now open the html file with a text editor (NotePad, TextEdit). What do you see?
+
+#### Code chunk options
+
+The way that pandoc displays the contents and output of code chunks is determined by the *options* that you set. These can be set for all code chunks in the document (*global* options) or for each chunk individually.
+
+This [reference guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) has a good overview of what the different options will do.
+
+Look at the first code chunk in the example lesson Rmd document where the global options are set. This code block demonstrates 3 global options that apply to all following code chunks in the document: `knitr::opts_chunk$set()`. It also shows how you would apply an options to a single code chunk in the brackets at the start of the chunk: `{r include = FALSE}`, so that this chunk is not shown in the resulting html document, even though it is evaluated.
+
+> **Practice**
+>
+> What other chunk options do you see in the example lesson Rmd file? What do they do? (Hint: You can figure it out by removing them and rendering the document.) 
+
+#### Figures
+
+Any figure that you make in a code chunk will by default be saved as separate files in your working directory and then imported into the final document created by `pandoc`. In our case, the first code chunk specifies: `knitr::opts_chunk$set(fig.path = "images/")`, which tells `knitr` that it should save any figures generated with code chunks to a folder named "images" within the working directory. The image files will be named according to the name of the code chunk from which they are generated. Hence, it is a good idea to separate analyses into separate code chunks and give them somewhat descriptive names. R markdown can also automatically number and caption your figures and tables. The [`captioner`](https://cran.r-project.org/web/packages/captioner/vignettes/using_captioner.html) package is particularly useful for this.
+
+> **Practice**
+>
+> 1. Add a new section to the example lesson Rmd document with markdown-formatted text and a new R code chunk. Render the document again.
+> 2. Open the html file with your web browser to see what your changes would look like online.
+
+### Class project
+
+Please note that your class project is recommended to be written as a R Markdown file.
+
+### Basic R tutorial
+
+Now it is an optional session for students who are new to R or who want a more formal introduction to R's terminology and data structures.
+
+We will be working through the Data Carpentry ecology lessons [Introduction to R](http://www.datacarpentry.org/R-ecology-lesson/01-intro-to-r.html) and [Starting with data](http://www.datacarpentry.org/R-ecology-lesson/02-starting-with-data.html).
+
+

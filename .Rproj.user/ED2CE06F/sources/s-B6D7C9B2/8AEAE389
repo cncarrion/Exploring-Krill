@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1558416501059.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8AEAE389",
+    "lastKnownWriteTime" : 1558467128,
+    "last_content_update" : 1558467128806,
+    "path" : "C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Project/Exploring_Krill/Exploring_Euphausiids_2_ctd.Rmd",
+    "project_path" : "Exploring_Euphausiids_2_ctd.Rmd",
+    "properties" : {
+        "cursorPosition" : "87,0",
+        "last_setup_crc32" : "",
+        "scrollLine" : "78",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

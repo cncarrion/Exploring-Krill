@@ -1,0 +1,93 @@
+---
+title: "Exploring Euphausiids_1"
+author: "Cynthia N Carrión"
+date: "4/27/2019"
+output: html_document
+---
+
+```{r include = F}
+# This code block sets up the r session when the page is rendered to html
+# include = FALSE means that it will not be included in the html document
+
+# Write every code block to the html document 
+knitr::opts_chunk$set(echo = TRUE)
+
+# Write the results of every code block to the html document 
+knitr::opts_chunk$set(eval = TRUE)
+
+# A function that allows writing r inline verbatim
+rinline <- function(code) {
+  sprintf('``` `r %s` ```', code)
+}
+```
+
+## Exploratory Data Analysis:
+Objective of this project is to explore correlations among krill abundance and their environment within the nearshore central region of the California Current. Specifically focused on the Monterey Bay biological hotspot region.
+
+
+### Euphausiid, aka krill: 
+![](C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Project/Exploring_Krill/Images/Epacifica_Swebb.jpg)
+
+## Background:
+Euphausiids are abundant shrimp-like zooplankton that serve as an important connection between primary producers and mid to higher trophic level predators in food webs. Found in the Central California Current Upwelling Ecosystem, two main euphausiid species, *Thysanoessa spinifera* and *Euphausia pacifica*, ordinarily serve as a reliable and abundant food source for a variety of commercially and ecologically important predators; e.g. squid, rockfish, salmon, seabirds, marine mammals, etc. Environmental variability can directly and indirectly impact euphausiid populations. Changes in euphausiid abundance or distribution can impact a wide range of higher trophic level predators through bottom up control.
+  
+  
+  ![](C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Project/Exploring_Krill/Images/TsEp_backlit.png)
+
+#### *Thysanoessa spinifera* (upper right) and *Euphausia pacifica* (below upper right)
+
+## Dataset:
+Since the early 1980's, the Southwest National Marine Fisheries Service (NMFS) has been conducting an annual springtime survey of young-of-the-year rockfish along the California coast. Over the years, by-catch has been incorporated and recorded as part of the survey. From this expanded effort, euphausiids have been officially counted since 2003 to present. Additionally, environmental information is gathered, along with catch estimates, and is available on NOAA's publicly accessible data server: [ERDAPP](http://rmarkdown.rstudio.com).
+
+Survey Area: ![](C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Project/Exploring_Krill/Images/NMFS_stations.png)
+
+## Methods:
+* Time frame: Springtime (April - June) for 2003 - 2016
+* Gather euphausiid catch per unit effort (CPUE) data for Central California Current region
+  + Core region should focus on area between Gulf of Farallones and north of the Southern California Bight
+  + Primary focus should be on biological hotspots, i.e. Monterey Bay Submarine Canyon and Gulf of Farallones
+* Gather corresponding environmental data
+  + [Upwelling Index](https://www.pfeg.noaa.gov/products/PFEL/modeled/indices/upwelling/NA/data_download.html)
+  + Temperature (10 m)
+  + Salinity
+  + Density
+  + Advection: U and V surface component
+  + Mixed layer depth
+  + Dynamic Height
+  + Nutrients (depending on availability)
+  + Chl a
+
+#### **-Dowloading Data-**
+
+From NOAA/NMFS/SWFSC 
+Pacific Fisheries Environmental Laboratory (PFEL)
+
+  * this has proved problematic
+  * still gathering csv files
+```{r}
+UpwellingIndex.dat <- read.csv('https://www.pfeg.noaa.gov/products/PFELData/upwell/6_hourly/upwell39N125W',
+                                 skip = 21, #21 rows to skip importing
+                               col.names = c('Date', '0_Upwelling', '6_Upwelling','12_Upwelling', '18_Upwelling', '0_Ekman', '6_Ekman', '12_Ekman', '18_Ekman'), #assing column names
+                                 na = c(-9999))
+```
+
+## Analysis:
+
+**Present summary statistics (mean and variance) for euphausiid CPUE**
+
+  * Spatially (averages by transects or regions)
+  * Temporally (averages by year)
+
+**Create relational data:**
+Join biological data with environmental data
+
+  * Based on location (Station/Region/Transect)
+  * Based on time (Spring/Summer)
+
+**Explore relationship among enviromental variables and euphausiid abundance:**
+
+1. Principal Component Analysis: Use dimention reduction analysis to condense environmental variables into manageable visualization and explore relationship among environment and euphausiid abundance. 
+
+2. Multiple Regression Analysis: test for relationship among environmental variables and euphausiid abundance as well as relationship among pricipal components and euphausiid abundance. 
+
+

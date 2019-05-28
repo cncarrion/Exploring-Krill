@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1558461103750.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "88A70B7C",
+    "lastKnownWriteTime" : 1558466163,
+    "last_content_update" : 1558466164128,
+    "path" : "C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Project/Exploring_Krill/ctd_load_data.R",
+    "project_path" : "ctd_load_data.R",
+    "properties" : {
+        "cursorPosition" : "8,17",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,5 @@
+"0","UpwellingIndex.dat <- read.csv('https://www.pfeg.noaa.gov/products/PFELData/upwell/6_hourly/upwell39N125W',"
+"0","                                 skip = 21, #21 rows to skip importing"
+"0","                               col.names = c('Date', '0_Upwelling', '6_Upwelling','12_Upwelling', '18_Upwelling', '0_Ekman', '6_Ekman', '12_Ekman', '18_Ekman'), #assing column names"
+"0","                                 na = c(-9999))"
+"2","header and 'col.names' are of different lengths"

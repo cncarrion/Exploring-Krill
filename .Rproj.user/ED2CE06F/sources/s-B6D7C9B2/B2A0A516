@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1556596324880.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B2A0A516",
+    "lastKnownWriteTime" : 1554836626,
+    "last_content_update" : 1554836626,
+    "path" : "C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Introduction/1.2-Introduction.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "7,3",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

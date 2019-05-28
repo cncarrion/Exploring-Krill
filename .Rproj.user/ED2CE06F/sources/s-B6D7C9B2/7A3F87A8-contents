@@ -1,0 +1,216 @@
+---
+title: "Climate Module (1)"
+author: "Data Science for the Environment"
+date: 2019-04-09
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Before class
+
+Read
+
+* R4DS-2: [Data exploration](http://r4ds.had.co.nz/explore-intro.html)
+* R4DS-3.2: [First steps](http://r4ds.had.co.nz/data-visualisation.html#first-steps)
+* R4DS-3.3: [Aesthetic mappings](http://r4ds.had.co.nz/data-visualisation.html#aesthetic-mappings)
+* R4DS-3.4: [Common problems](http://r4ds.had.co.nz/data-visualisation.html#common-problems)
+* R4DS-3.5: [Facets](http://r4ds.had.co.nz/data-visualisation.html#facets)
+* R4DS-3.6: [Geometric objects](http://r4ds.had.co.nz/data-visualisation.html#geometric-objects)
+* [Data Visualization Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf)
+
+Watch
+
+* DataCamp: [Tidyverse Chapter 2: Data Visualization](https://www.datacamp.com/courses/introduction-to-the-tidyverse)
+
+### Background
+
+What is the evidence for climate change? In this module, we will examine some of the most important indicators of global climate change: including global mean temperature and CO~2~ concentration. We will wrangle a wide range of tabular data file formats used by NOAA and other agencies and introduce the fundamentals of data visualization with ggplot2 and data processing with basic functions from the readr, tidyr, and dplyr packages as we seek to replicate the principle results of climate change over the last decades and also the past thousands of years.
+
+The data are based on the now-famous "hockey-stick" curve combining present and historical CO~2~ records from [Petit et al (1999, *Nature*)](https://doi.org/10.1038/20859 "Climate and atmospheric history of the past 420,000 years from the Vostok ice core, Antarctica").
+
+### Visualizing temperature data
+
+Each of the last years has consecutively set new records on global climate. In this section we will analyze global mean temperature data.
+
+Data from: <http://climate.nasa.gov/vital-signs/global-temperature>
+
+Construct the necessary R code to import and prepare for manipulation the following data set: <http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt>
+
+![](images/GlobalTemp.png)
+
+
+> **Discuss**
+> 
+> 1. Describe the data set: what are the columns and units? Where do the numbers come from?
+> 2. What is the resolution of the data? Interpretation of missing values?
+
+First, load library
+```{r message=FALSE}
+library(tidyverse)
+```
+
+Read in data.
+
+```{r message=FALSE}
+temp.dat <- read_table('http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt',
+                       skip = 5, # 5 rows to skip importing
+                       col_names = c('year', 'no_smooth', 'lowess')) # assign column names
+```
+
+Plots are additive. Let's plot raw data first, then overlay with smoothed data.
+
+```{r}
+ggplot(temp.dat, aes(x = year, y = no_smooth)) +
+  geom_point(color = 'gray', shape = 1) +
+  geom_line(color = 'gray') +
+  xlab('YEAR') + ylab('Temperature Anomaly (C)') +
+  theme_bw()
+```
+
+Overlay with smoothed version--can do as a single step, or add other layers.
+
+```{r}
+no_smooth.gg <- ggplot(temp.dat, aes(x = year, y = no_smooth)) +
+  geom_point(color = 'gray', shape = 1) +
+  geom_line(color = 'gray') +
+  xlab('YEAR') + ylab('Temperature Anomaly (C)') +
+  theme_bw()
+
+no_smooth.gg +
+  geom_line(aes(y = lowess))
+```
+
+
+
+### Visualizing CO~2~ data
+
+- Example from <http://climate.nasa.gov/vital-signs/carbon-dioxide/>
+- Raw data from <ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt>
+
+> **Discuss**
+> 
+> 1. Describe the data set: what are the columns and units? Where do the numbers come from?
+> 2. What is the resolution of the data? Interpretation of missing values?
+
+Load library first.
+
+```{r message=FALSE}
+library(tidyverse)
+```
+
+Let's read in the data, directly from the web.
+
+```{r message=FALSE}
+co2.dat <- 
+read_table("ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt", 
+           comment="#",
+           col_names = c("year", "month", "decimal_date", "average",
+                         "interpolated", "trend", "days"),
+           na = c("-1", "-99.99"))
+co2.dat
+```
+
+Plot the raw data of CO~2~ time series.
+
+```{r}
+ggplot(co2.dat, aes(x = decimal_date, y = average)) + geom_line() 
+```
+
+> **Practice**
+> 
+> A rolling average is used in computing the "trend" line. How to overlay "trend" on top of the observed data?
+
+```{r, message=F}
+ggplot(co2.dat, aes(x = decimal_date)) +
+  geom_line(aes(y = average), color = 'black') +
+  geom_line(aes(y = trend), color = 'red')
+```
+
+> **Practice**
+> 
+> Write code to show which months are the CO~2~ values at the maximum and minimum. Why is this?
+
+Show raw data with points.
+
+```{r, message=F}
+ggplot(co2.dat, aes(x = month, y = average, color = year)) + 
+  geom_point()
+```
+
+What about boxplots?
+
+```{r, message=F}
+ggplot(co2.dat, aes(x = month, y = average, color = year)) + 
+  geom_boxplot()
+```
+
+What went wrong? 
+
+Continuous vs discrete variables. Refer to the [Data Visualization Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf).
+
+```{r, message=F}
+ggplot(co2.dat, aes(group = month, y = average)) + 
+  geom_boxplot()
+```
+
+
+
+### Visualizing longer term trends in CO~2~ records
+
+The data we analyzed previously included CO~2~ records dating back only as far as the measurements at the Manua Loa observatory. To put these values into geological perspective requires looking back much farther than humans have been monitoring atmosopheric CO~2~ levels.  To do this, we need another approach.
+
+[Vostok ice core data](http://cdiac.ornl.gov/trends/co2/ice_core_co2.html), back to 400,000 yrs before present day (BP).
+
+- Description of data set: <http://cdiac.esd.ornl.gov/trends/co2/vostok.html>
+- Data source: <http://cdiac.ornl.gov/ftp/trends/co2/vostok.icecore.co2>
+
+> **Discuss**
+> 
+- Describe the data set: what are the columns and units? Where do the numbers come from? 
+- What is the uncertainty in measurment? Resolution of the data? Interpretation of missing values?
+
+Read in and prepare data for analysis.
+
+```{r}
+vostok.dat <- read.table('http://cdiac.ornl.gov/ftp/trends/co2/vostok.icecore.co2',
+                         skip = 21, sep = '\t',
+                         col.names = c('depth', 'ice.age', 'air.age', 'co2'))
+vostok.dat <- as_tibble(vostok.dat)
+vostok.dat
+```
+
+> **Practice**
+> 
+- Reverse the ordering to create a chronological record.  
+- Plot data
+
+```{r}
+ggplot(vostok.dat, aes(air.age, co2)) +
+  geom_line() +
+  xlab('Age of entrapped air (yr BP)') +
+  ylab('CO2 concentration (ppmv)') +
+  scale_x_reverse()
+```
+
+Also think about log-transformed axes, etc.
+
+### Work on other climate change datasets
+
+Melting ice sheets?
+
+- Data description: <http://climate.nasa.gov/vital-signs/land-ice/>
+- Raw data file: <http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv>
+
+Rising sea levels?
+
+- Data description: <http://climate.nasa.gov/vital-signs/sea-level/>
+- Raw data file: <http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt>
+
+Arctic sea ice?
+
+- Data description: <http://nsidc.org/data/G02135>
+- Raw data file: <ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v3.0.csv>
+

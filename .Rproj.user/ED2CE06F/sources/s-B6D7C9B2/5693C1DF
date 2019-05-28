@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1558412450464.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5693C1DF",
+    "lastKnownWriteTime" : 1558417712,
+    "last_content_update" : 1558417712822,
+    "path" : "C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Project/Exploring_Krill/Euphausiid_data_analysis_1.R",
+    "project_path" : "Euphausiid_data_analysis_1.R",
+    "properties" : {
+        "cursorPosition" : "29,42",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

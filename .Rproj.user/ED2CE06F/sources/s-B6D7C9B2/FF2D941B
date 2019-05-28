@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1558465326655.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "FF2D941B",
+    "lastKnownWriteTime" : 7310028807570858028,
+    "last_content_update" : 1558465326655,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "FC0CA449",
+        "caption" : "nmfs_ctd",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=nmfs_ctd&cache_key=FC0CA449",
+        "displayedObservations" : "453829",
+        "environment" : "",
+        "expression" : "nmfs_ctd",
+        "object" : "nmfs_ctd",
+        "preview" : "0",
+        "totalObservations" : "453829",
+        "variables" : "20"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

@@ -1,0 +1,152 @@
+---
+title: "Exploring_Euphausiids_2"
+author: "Cynthia N Carrión"
+date: "5/20/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# This code block sets up the r session when the page is rendered to html
+# include = FALSE means that it will not be included in the html document
+
+# Write every code block to the html document 
+knitr::opts_chunk$set(echo = TRUE)
+
+# Write the results of every code block to the html document 
+knitr::opts_chunk$set(eval = TRUE)
+
+# A function that allows writing r inline verbatim
+rinline <- function(code) {
+  sprintf('``` `r %s` ```', code)
+}
+```
+
+## Exploratory Data Analysis:
+
+Objective of this project is to explore correlations among krill abundance and their environment within the nearshore central region of the California Current. Specifically focused on the Monterey Bay biological hotspot region.
+
+Survey Area: ![](C:/Users/Stewart Wolf/Desktop/Envs_Rclass_Spring2019/Project/Exploring_Krill/Images/NMFS_stations.png)
+
+### To begin:
+
+I started by attempting to clean my messiest data set for summary analysis, krill catch data. Multiple people have contributed to the creation of this file, over many years. For this reason, errors and inconsistencies tend to sneak in. 
+
+The following are column names and descriptions for the krill catch data:
+
+ + Date: month/day/year format
+ + Year
+ + Haul: count of how many times net has entered water to fish, including aborted attempts
+ + Station
+ + Transect: Series of stations along sampling line 
+ + Region: Series of transect lines within similar geographic region
+ + Depth: according to ship's onboard instruments, max depth at station (innaccurate at > 1000 m)
+ + Taxon: species abbreviation; Ep (cosmopolitan species), Ts (shallow water species), Nd (deep-er water species), etc
+ + Sex: 3 categories include Male, Female, and Both (total male and female)
+ + Split: proportion of subsample counted
+ + Count: individuals counted
+ + Species Code: species code assigned by NMFS 
+ + Subsample: volume of subsample
+ + TotVol: total volume of krill caught
+ + 5MinTowExpansion: multiplier by 3 to standardize all catches to 15 min tow
+ + CPUE: catch per unit effort
+
+### Importing Data
+
+ + Import and create a file “master_krill” that will have all krill data for all years
+ + Create subset datasets from master
+ + Use ID code to select species: will be useful for NMFS and less variation in dataset
+
+
+```{r, echo=FALSE}
+#load necessary libraries
+library(tidyverse)
+
+#Import krill data
+master_krill <- read.csv("Data/Master_Krill.csv")
+```
+
+## Cleaning the Data
+
+ + Summary statistics for Ep (total) at each Transect for all years
+ + Create data subset by species = Ep
+ + Plot the average Ep (log transformed) by year for each transect
+
+```{r, echo=FALSE}
+Epacifica_all <- filter(master_krill, Species.Code == 1816)
+
+# Create a new variable, log transformed CPUE
+ep_all <- mutate(Epacifica_all, ln_catch = log(CPUE +1))
+
+# Select necessary columns
+ep_all_sum <- select(ep_all, Year, Transect:Sex, Species.Code, CPUE, ln_catch) %>%
+  filter(Taxon == "Ep", Sex == "Both" | Sex == "both") %>%
+  arrange(Year) %>%
+  group_by(Year, Transect) %>%
+  summarize(average_Ep = mean(CPUE), min_Ep = min(CPUE), max_Ep = max(CPUE), total_Ep = n())
+
+head(ep_all_sum)
+
+# Plot average Ep at each transect 
+ggplot (ep_all_sum, aes(x = Year, y = log(average_Ep))) +
+  geom_point() + facet_wrap(vars(Transect))
+```
+
+## Environmental Data: Cleaning Erddap CTD Data
+
+I downloaded CTD data from the Erddap public server, narrowing my search for cruise data from 2003 to 2015. 
+
+This .csv file will serve as the master data set that has all CTD casts. 
+
+To clean ctd data set:
+ + Remove daytime casts, stations > 1000
+ + Later, join CTD file to match krill stations
+
+```{r}
+#load data from location: Data/FED_Rockfish_CTD_2003_2015.csv
+nmfs_ctd <- read.csv("Data/FED_Rockfish_CTD_2003_2015.csv", skip = 2,
+                     col.names = c('time','latitude','longitude','cruise','ctd_index','ctd_depth',
+                                   'temperature','salinity','density','dyn_hgt','irradiance',
+                                   'fluor_volt','transmissivity','chlorophyll','oxygen_volt',
+                                   'oxygen','ctd_number','station','bottom_depth','vessel')) #line 1: names, line 2:units
+head(nmfs_ctd)
+                     
+nmfs_ctd_night <- filter(nmfs_ctd, station < 1000)
+
+head(nmfs_ctd_night)
+```
+
+
+## Issues/Thoughts
+I found blanks in my dataset. 
+Mispelled items or inconsistently entered names, e.g. Pesc vs pesc or Both vs both
+
+ + Is there a best way to find and replace?
+ 
+
+Location of files:
+I have started using Google sheets to access my data from anywhere I have a internet connection.However, I could not open my data using the link for my [Master_Krill file](https://docs.google.com/spreadsheets/d/1zqw2r9GwwRB4w68U57BlrukNEMaJ90QfZz8yvR9XeIY/edit#gid=0)
+
+## Still Simmering
+
+I still need to gather the necessary environmental variables to compare to krill data.
+
+ + Join station depth to depth variable and create a new category (column) that designates shallow vs deep water
+ + Plot all species averages through time at each transect and in each region (larger spatial category)
+ + Run regression analysis on environmental variables with krill as dependent variable
+ + Use package for Principal Component Analysis found
+
+### Functions:
+
+I'm thinking of creating a function that will plot the average of krill (by species) by year at each transect.
+
+ + the above script is serving as a possible template
+
+I would also like to create functions that will calculate oceanography variables from mooring data, but I have not gotten to this step yet.
+If I can do 
+
+### Mapping 
+
+The spatial component of my data set means I can map krill catch to location over time. 
+
+I will try overlaying krill catch on map, however, I will need to run analysis on different computer with more computing power for this. 
+
